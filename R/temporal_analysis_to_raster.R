@@ -7,7 +7,8 @@
 #' crop_map_world(df)
 #' crop_map_world(df,crs='longlat')
 #' @export
-#'
+#'@importFrom BBmisc normalize
+#'@importFrom raster raster
 
 temporal_analysis_to_raster= function(input,from=NULL,to=NULL,ratio_low=NULL,ratio_high=NULL,var_2=NULL,remove_ratio_low=NULL,remove_ratio_high=NULL) {
 

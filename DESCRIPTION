@@ -9,8 +9,8 @@ Description: More about what it does (maybe more than one line)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.3.0), methods, sp
-Imports: ggplot2, plyr, raster, rgeos, tidyverse,
+Depends: R (>= 3.3.0), methods, sp,
+Imports: ggplot2, plyr, raster, rgeos, tidyverse, BBmisc
 Suggests: testthat, knitr, rmarkdown
 RoxygenNote: 6.1.1
 NeedsCompilation: no

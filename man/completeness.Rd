@@ -4,7 +4,7 @@
 \alias{completeness}
 \title{completeness}
 \usage{
-completeness(gbif_df, shape_iucn, crs = "longlat")
+completeness(gbif_df, raster_iucn, crs = "longlat")
 }
 \arguments{
 \item{crs}{projection of data provided ('longlat'/'cea'/'auto')}

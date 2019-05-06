@@ -8,7 +8,7 @@
 #' crop_map_world(df,crs='longlat')
 #' @export
 #'
-temporal_analysis=function(input,raster_input){
+temporal_analysis=function(input,raster_iucn){
   #df = species / date of record / long/ lat
   print('step 1')
 
@@ -20,7 +20,7 @@ temporal_analysis=function(input,raster_input){
   year_list=unique(input$year)
   year_list <- sort(year_list, decreasing = FALSE, na.last = NA)
 
-  r=raster(ncol=84, nrow=77,extent(shp_behrmann), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+  r=raster(ncol=84, nrow=77,extent(raster_iucn), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
 
   r2=r
   values(r2) <- seq(1:length(r2))
@@ -114,7 +114,7 @@ temporal_analysis=function(input,raster_input){
     #problem
     #year1, sp = 1,2,3, rich=3
     #year2, sp = 1, rich = 4
-    ratio_df=df_final_richness/raster_input@data@values[list_cells_df]
+    ratio_df=df_final_richness/raster_iucn@data@values[list_cells_df]
 
     vec_final[[k]]=ratio_df
 
@@ -153,6 +153,20 @@ temporal_analysis=function(input,raster_input){
 
   list_of_cells=names(vec_final_df2[[year_list[k]]])
 
+  visits_per_year_list=vector("list",length = length(year_list))
+
+  for (k in seq_along(year_list)){
+
+    temp=list_of_big_df[[year_list[[k]]]] %>% colSums()
+    temp=which(temp>0)
+    temp=names(temp)
+
+    visits_per_year_list[[k]]=temp
+  }
+
+  names(visits_per_year_list)=year_list
+
+  num_cell_visits=visits_per_year_list
 
   for (k in seq_along(year_list)){
     cat('.... .... .... year [', year_list[k], '/', tail(n=1,year_list), ']\n', sep = '')
@@ -170,8 +184,8 @@ temporal_analysis=function(input,raster_input){
       #cat('.... .... .... year [', list_of_cells[i], '/', list_of_cells[i], ']\n', sep = '')
 
       #add a_p column
-
-      if (as.numeric(list_of_cells[i]) %in% num_list_visits[[year]]==T){
+      #num_cell_visits
+      if (as.numeric(list_of_cells[i]) %in% num_cell_visits[[year]]==T){
         a_p_temp=cbind(rownames(vec_final_df2[[year_list[k]]])[i],1)}
 
       else{
