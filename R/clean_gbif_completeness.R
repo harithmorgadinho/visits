@@ -7,7 +7,13 @@
 #' crop_map_world(df)
 #' crop_map_world(df,crs='longlat')
 #' @export
+#'@importFrom CoordinateCleaner cc_cap
+#'@importFrom CoordinateCleaner cc_cen
+#'@importFrom CoordinateCleaner cc_inst
+#'@importFrom CoordinateCleaner cc_dupl
+#'@importFrom CoordinateCleaner cc_equ
 #'
+#'?cc_cap
 clean_gbif_completeness=function(gbif_df,iucn_shp,taxa_list,method='zizka',crs=NULL){
   #only use names in gbif that exist in iucn_shp
   new_names_list=intersect(iucn_shp@data$BINOMIAL,gbif_df$species)
@@ -64,9 +70,9 @@ clean_gbif_completeness=function(gbif_df,iucn_shp,taxa_list,method='zizka',crs=N
   }
   #use ccleaner
   colnames(gbif_df)=c('species',"year","decimalLongitude","decimalLatitude")
-  gbif_df=cc_cap(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')
-  gbif_df=cc_cen(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')
-  gbif_df=cc_inst(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')
+  #gbif_df=cc_cap(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')
+  gbif_df=cc_cen(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude',test = "country")
+  #gbif_df=cc_inst(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')
   #cc_dupl(input3, lon = 'decimalLongitude', lat =  'decimalLatitude')
 
   gbif_df=cc_equ(gbif_df, lon = 'decimalLongitude', lat =  'decimalLatitude')

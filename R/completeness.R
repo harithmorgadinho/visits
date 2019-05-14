@@ -16,7 +16,7 @@ completeness=function(gbif_df,raster_iucn,crs='longlat'){
     spdf <- SpatialPointsDataFrame(df_coord, df,proj4string =
                                      CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
 
-    r=raster(ncol=84, nrow=77,extent(raster_iucn), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+    r=raster(extent(raster_iucn), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
 
   }
   else
@@ -25,13 +25,13 @@ completeness=function(gbif_df,raster_iucn,crs='longlat'){
 
     spdf=spTransform(spdf,CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
 
-    r=raster(ncol=84, nrow=77,extent(raster_iucn), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+    r=raster(extent(raster_iucn), resolution=100000,crs=CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
 
   }
 
   print('rasterizing gbif')
 
-  gbif_temp=rasterize(spdf,r,fun=function(x, ...) {length(unique(na.omit(x)))},field=spdf$species)
+  gbif_temp = rasterize(spdf,r,fun=function(x, ...) {length(unique(na.omit(x)))},field=spdf$species)
 
 
   #shape_iucn=gBuffer(shape_iucn,0.5,byid=T,id=shape_iucn$layer)
@@ -45,7 +45,7 @@ completeness=function(gbif_df,raster_iucn,crs='longlat'){
   iucn_temp=raster_iucn
 
 
-  gbif_temp=rasterize(spdf,r,fun=function(x, ...) {length(unique(na.omit(x)))},field=spdf$species)
+  #gbif_temp = rasterize(spdf,r,fun=function(x, ...) {length(unique(na.omit(x)))},field=spdf$species)
 
   r_final=gbif_temp/raster_iucn
   plot(r_final)
