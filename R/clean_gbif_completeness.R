@@ -13,7 +13,7 @@
 #'@importFrom CoordinateCleaner cc_dupl
 #'@importFrom CoordinateCleaner cc_equ
 #'
-#'?cc_cap
+#'
 clean_gbif_completeness=function(gbif_df,iucn_shp,taxa_list,method='zizka',crs=NULL){
   #only use names in gbif that exist in iucn_shp
   new_names_list=intersect(iucn_shp@data$BINOMIAL,gbif_df$species)
