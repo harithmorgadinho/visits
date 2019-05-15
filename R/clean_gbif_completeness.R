@@ -36,12 +36,16 @@ clean_gbif_completeness=function(gbif_df,iucn_shp,taxa_list,method='zizka',crs=N
   if(method=='josue'){
     #clean species outside polygons method 2
 
-    if(is.null(crs=='cea')){
+    if(crs=='cea'){
+      df=gbif_df
+      df_coord=df[,3:4]
       spdf <- SpatialPointsDataFrame(df_coord, df,proj4string =
                                        CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
     }
-    else
+    if(is.null(crs)| crs=='longlat')
     {
+      df=gbif_df
+      df_coord=df[,3:4]
       spdf <- SpatialPointsDataFrame(df_coord, df,proj4string =
                                        CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"))
     }
@@ -66,7 +70,7 @@ clean_gbif_completeness=function(gbif_df,iucn_shp,taxa_list,method='zizka',crs=N
 
     gbif_df=as.data.frame(dat_2)
     gbif_df=gbif_df[,c(1,2,5,6)]
-    max(gbif_df$decimalLongitude.1)
+
   }
   #use ccleaner
   colnames(gbif_df)=c('species',"year","decimalLongitude","decimalLatitude")
